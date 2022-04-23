@@ -100,7 +100,6 @@ public class RecorderThread implements Runnable {
     }
 
     private void setupVideoCodec() throws IOException {
-        // Encoded video resolution matches virtual display.
         MediaFormat encoderFormat = MediaFormat.createVideoFormat(videoMime, videoWidth, videoHeight);
         encoderFormat.setInteger(MediaFormat.KEY_COLOR_FORMAT,
                 MediaCodecInfo.CodecCapabilities.COLOR_FormatSurface);
@@ -267,7 +266,7 @@ public class RecorderThread implements Runnable {
                 }
 
                 if (videoTrackIndex >= 0 && audioTrackIndex < 0)
-                    continue; // wait for audio config before processing any video data frames
+                    continue;
 
                 encoderStatus = videoEncoder.dequeueOutputBuffer(bufferInfo, 10000);
                 if (encoderStatus == MediaCodec.INFO_TRY_AGAIN_LATER) {

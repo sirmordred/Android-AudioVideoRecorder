@@ -131,7 +131,7 @@ public class RecorderService extends Service {
                     height = (int)(height / scale);
                 }
                 if (DEBUG) Log.v(TAG, String.format("startRecording:(%d,%d)(%d,%d)", metrics.widthPixels, metrics.heightPixels, width, height));
-                String outputtedFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "OgiRecordNew.mp4";
+                String outputtedFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "MyRecord.mp4";
                 sMuxer = new RecorderThread(projection, outputtedFilePath, width, height,
                         calcBitRate(30, width, height));
                 sMuxer.startRecording();
@@ -157,20 +157,19 @@ public class RecorderService extends Service {
         stopSelf();
     }
 
-//================================================================================
     private void showNotification(final CharSequence text) {
         if (DEBUG) Log.v(TAG, "showNotification:" + text);
-        // Set the info for the views that show in the notification panel.
         final Notification notification = new Notification.Builder(this, CHANNEL_ID)
-                .setSmallIcon(android.R.drawable.ic_notification_overlay)  // the status icon
-                .setTicker(text)  // the status text
-                .setWhen(System.currentTimeMillis())  // the time stamp
-                .setContentTitle(getText(R.string.app_name))  // the label of the entry
-                .setContentText(text)  // the contents of the entry
-                .setContentIntent(createPendingIntent())  // The intent to send when the entry is clicked
+                .setSmallIcon(android.R.drawable.ic_notification_overlay)
+                .setTicker(text)
+                .setWhen(System.currentTimeMillis())
+                .setContentTitle(getText(R.string.app_name))
+                .setContentText(text)
+                .setContentIntent(createPendingIntent())
                 .build();
 
-        NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "MyExChannel", NotificationManager.IMPORTANCE_DEFAULT);
+        NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "MyRecorderChannel",
+                NotificationManager.IMPORTANCE_DEFAULT);
         mNotificationManager.createNotificationChannel(channel);
 
         // Send the notification.
@@ -181,7 +180,8 @@ public class RecorderService extends Service {
     }
 
     protected PendingIntent createPendingIntent() {
-        return PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0);
+        return PendingIntent.getActivity(this, 0,
+                new Intent(this, MainActivity.class), 0);
     }
 
 }
